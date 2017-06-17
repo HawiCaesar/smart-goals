@@ -14,13 +14,14 @@ The `requirements.txt` file has all requirements for this app
 #### Create a bucket list(s) and its description
 #### Update a bucket list
 #### Delete a bucket list
-#### Create a bucket list entry
-#### Check off a completed entry
-#### View all bucket list entries
-#### View all checked entries
-#### View all incompleted entries
-#### Update a bucket list entry
-#### Delete a bucket list entry
+#### View all bucket lists
+#### Create a bucket list activity
+#### Check off a completed activity
+#### View all bucket list activites
+#### View all checked activites
+#### View all incompleted activites
+#### Update a bucket list activity
+#### Delete a bucket list activity
 
 ## Tests
 To run tests change directory to the tests folder and run the tests using the python test tool you have e.g. for pytest
