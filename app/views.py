@@ -26,3 +26,8 @@ def login():
 def signup():
     return render_template("sign_up.html")
 
+
+@app.errorhandler(404)
+def nage_not_found(error):
+    return render_template('404.html'), 404
+
