@@ -16,8 +16,11 @@ a{
 .jumbotron{
 	text-align: center;padding-bottom: 70px;
 }
-#div-form{
+.div-form{
     padding-right: 200px; padding-left:200px;
+}
+.div-form-right{
+	padding-right: 200px;
 }
 .activity_description{
     padding-bottom: 20px;
