@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/HawiCaesar/smart-goals.svg?branch=develop)(https://travis-ci.org/HawiCaesar/smart-goals)
+[![Build Status](https://travis-ci.org/HawiCaesar/smart-goals.svg?branch=master)](https://travis-ci.org/HawiCaesar/smart-goals)
 
 # Smart Goals
 
@@ -40,4 +40,4 @@ pytest test_bucket_list_app.py
 
 * Python 3.5 Documentation
 * Flask 0.12.2 Documentation
-* Various internet resources
+* Various internet resources and Friends
