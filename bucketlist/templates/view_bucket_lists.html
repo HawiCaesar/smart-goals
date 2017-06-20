@@ -14,12 +14,12 @@
         <div class="header clearfix">
             <nav>
                 <ul class="nav nav-pills pull-right">
-                    <li><a href="profile.html">Profile</a></li>
-                    <li><a href="index.html">Logout</a></li>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/logout">Logout</a></li>
                 </ul>
             </nav>
 	    </div>
-        <h1 class="activity_description">Hello {A}, these are your bucketlists</h1>
+        <h1 class="activity_description">Hello {{ session['name'] }}, these are your bucketlists</h1>
         <div class="table-navs">
             <a href="" class="btn btn-primary">Add Bucketlist</a>
             <div style="float:right">
