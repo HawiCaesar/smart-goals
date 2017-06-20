@@ -32,5 +32,7 @@ class Bucketlist(object):
         pass
 
 
-
-
+class Bucketlist_Activities(Bucketlist):
+    def __init__(self, bucketlist_activity_name, bucketlist_description, due_date):
+        super(Bucketlist_Activities, self).__init__()
+        self.done = False
