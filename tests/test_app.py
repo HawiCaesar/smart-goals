@@ -10,12 +10,10 @@ class SmartGoalsTestCase(unittest.TestCase):
         response = tester.get('/', content_type='html/text')
         self.assertEqual(response.status_code, 200)
 
-    
     def test_login_page_works(self):
         tester = app.test_client(self)
         response = tester.get('/login', content_type='html/text')
         self.assertEqual(response.status_code, 200)
-    
 
     def test_signup_page_works(self):
         tester = app.test_client(self)
@@ -44,12 +42,29 @@ class SmartGoalsTestCase(unittest.TestCase):
         response = tester.get('/xyz-page', content_type='html/text')
         self.assertTrue(b'Page Not' in response.data, msg="Custom 404 page not working")
 
-    ## Test if User object can be created
+    ## Test if User object can be created/ Sign Up
     def test_user_class_can_be_instantiated(self):
         user1 = models.User("James Brown", "jb@email.com", "ABC")
-        self.assertEqual(user1.getUser(), {"James Brown", "jb@email.com", "3c01bdbb26f358bab27f267924aa2c9a03fcfdb8"}, 
+        self.assertEqual(user1.getUser(), {"name":"James Brown", "email":"jb@email.com",
+                                           "password":"3c01bdbb26f358bab27f267924aa2c9a03fcfdb8"},
                          "User not created")
 
+    # Test to check if User can update their details
+    def test_user_can_update_details(self):
+        user1 = models.User("James Brown", "jamesbr@gmail.com", "ABC")
+        self.assertEqual(user1.updateUser("James Brown", "jamesbrown@gmail.com"),
+                         {"name":"James Brown", "email":"jamesbrown@gmail.com"},
+                         "User details cannot be updated")
+    
+
+    def test_user_email_is_correct_format(self):
+        user2 = models.User("Lucy Deeds", "lucydeeds@gmail.com", "ABC")
+        self.assertTrue('@' in user2.email, "User email is not correct")
+    
+
+    #def test_user_can_make_bucketlist(self):
+    #    bucketlist1 = models.Bucketlist()
+        
 
 
 
