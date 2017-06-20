@@ -46,8 +46,8 @@ class SmartGoalsTestCase(unittest.TestCase):
 
     ## Test if User object can be created
     def test_user_class_can_be_instantiated(self):
-        user1 = models.User("James Brown", "jb@email.com", "%$%G%$")
-        self.assertEqual(user1.getUser(), {"James Brown", "jb@email.com", "%$%G%$"}, 
+        user1 = models.User("James Brown", "jb@email.com", "ABC")
+        self.assertEqual(user1.getUser(), {"James Brown", "jb@email.com", "3c01bdbb26f358bab27f267924aa2c9a03fcfdb8"}, 
                          "User not created")
 
 

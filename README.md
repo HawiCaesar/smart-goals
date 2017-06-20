@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/HawiCaesar/smart-goals.svg?branch=develop)(https://travis-ci.org/HawiCaesar/smart-goals)
+
 # Smart Goals
 
 What would you like to do in the next few years? Climbs a mountain? Learn to
