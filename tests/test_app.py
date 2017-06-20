@@ -55,21 +55,14 @@ class SmartGoalsTestCase(unittest.TestCase):
         self.assertEqual(user1.updateUser("James Brown", "jamesbrown@gmail.com"),
                          {"name":"James Brown", "email":"jamesbrown@gmail.com"},
                          "User details cannot be updated")
-    
 
     def test_user_email_is_correct_format(self):
         user2 = models.User("Lucy Deeds", "lucydeeds@gmail.com", "ABC")
         self.assertTrue('@' in user2.email, "User email is not correct")
-    
 
-    #def test_user_can_make_bucketlist(self):
-    #    bucketlist1 = models.Bucketlist()
-        
 
 
 
 
 if __name__ == "__main__":
     unittest.main()
-
-
