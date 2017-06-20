@@ -1,6 +1,6 @@
 from flask import render_template
 
-from app import app
+from bucketlist import app, models
 
 @app.route('/')
 def index():

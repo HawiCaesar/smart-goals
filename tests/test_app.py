@@ -1,10 +1,10 @@
 import unittest
 
-from app import app
+from bucketlist import app, models
 
 class SmartGoalsTestCase(unittest.TestCase):
 
-    #test if pages return 200 Ok message whenc alled
+    #test if pages return 200 Ok message when called
     def test_index_page_works(self):
         tester = app.test_client(self)
         response = tester.get('/', content_type='html/text')
@@ -42,7 +42,14 @@ class SmartGoalsTestCase(unittest.TestCase):
     def test_custom_message_for_page_not_found(self):
         tester = app.test_client(self)
         response = tester.get('/xyz-page', content_type='html/text')
-        self.assertTrue(b'Page Not' in response.data, msg="Check custom 404 page")
+        self.assertTrue(b'Page Not' in response.data, msg="Custom 404 page not working")
+
+    ## Test if User object can be created
+    def test_user_class_can_be_instantiated(self):
+        user1 = models.User("James Brown", "jb@email.com", "%$%G%$")
+        self.assertEqual(user1.getUser(), {"James Brown", "jb@email.com", "%$%G%$"}, 
+                         "User not created")
+
 
 
 
