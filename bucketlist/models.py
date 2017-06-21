@@ -23,26 +23,36 @@ class User(object):
     def updateUser(self, full_name, email):
         self.fullname = full_name
         self.email = email
+        
+        self.user_details['name'] = self.fullname
+        self.user_details['email'] = self.email
 
-        return {'name': self.fullname, 'email': self.email}
+
+        return self.user_details
 
 
 class Bucketlist(object):
     def __init__(self):
-        self.bucketlist_name = ''
-        self.bucketlist_description = ''
         self.bucketlists = []
 
     def create_bucketlist(self, bucketlist_name, bucketlist_description):
-        pass
+        self.bucketlists.append({bucketlist_name:bucketlist_description})
 
     def get_bucketlists(self):
         return self.bucketlists
 
-    def update_bucketlist(self, bucketlist_name, bucketlist_description):
-        pass
+    def update_bucketlist(self, bucketlist_key, bucketlist_name, bucketlist_description):
+        update_bucklist = self.bucketlists[bucketlist_key]
 
+        update_bucklist = {bucketlist_name: bucketlist_description}
 
+        self.bucketlists[bucketlist_key] = update_bucklist
+
+        return self.bucketlists
+    
+    def delete_bucketlist(self, bucketlist_key):
+        self.bucketlists.pop(bucketlist_key)
+        return self.bucketlists
 
 class Bucketlist_Activities(Bucketlist):
     def __init__(self):
