@@ -59,7 +59,8 @@ class SmartGoalsTestCase(unittest.TestCase):
     def test_user_email_is_correct_format(self):
         user2 = models.User("Lucy Deeds", "lucydeeds@gmail.com", "ABC")
         self.assertTrue('@' in user2.email, "User email is not correct")
-
+    
+    # Bucket list test cases
     def test_user_can_create_bucketlist(self):
         user1_bucketlist = models.Bucketlist()
         user1_bucketlist.create_bucketlist('Career Things', 'Goals to achieve in my career')
