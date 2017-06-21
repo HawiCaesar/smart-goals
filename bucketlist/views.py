@@ -1,7 +1,7 @@
-from flask import render_template, request, redirect, url_for, session, flash
+from flask import render_template, request, redirect, url_for, session, flash, Markup
 
 from bucketlist import app, models
-from .forms import SignUpForm, LoginForm
+from .forms import SignUpForm, LoginForm, BucketlistForm
 import hashlib
 
 
@@ -95,12 +95,38 @@ def create_user():
 @app.route("/logout")
 def logout():
     session.clear()
+
     return redirect(url_for('index'))
 
 
 @app.route("/my-bucketlists/")
 def user_bucket_lists():
     return render_template('view_bucket_lists.html')
+
+
+@app.route("/add-bucketlist")
+def add_bucketlist():
+    form = BucketlistForm()
+    return render_template("add_bucket_list.html", form=form)
+
+
+@app.route("/create-bucketlist", methods=['GET', 'POST'])
+def create_bucketlist():
+    form = BucketlistForm()
+
+    if form.validate_on_submit():
+
+        bucketlist = models.Bucketlist()
+        bucketlist.create_bucketlist(request.form.get("bucketlistname"),
+                                     request.form.get("simple_description"))
+
+        success = Markup("<div class='alert alert-success' role='alert'>\
+                        <strong>Done! </strong>Your "+request.form.get("bucketlistname")+"\
+                         Bucketlist is created.</div>")
+        flash(success)
+        session["bucketlists"] = bucketlist.get_bucketlists()
+        return redirect(url_for('user_bucket_lists'))
+
 
 @app.route("/bucketlist-activities")
 def user_bucket_lists_activities():

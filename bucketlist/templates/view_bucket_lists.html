@@ -1,62 +1,53 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Smart Goals | All My Bucket Lists</title>
-	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="HawiCaesar">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-</head>
-<body>
-    <div class="container">
-        <div class="header clearfix">
-            <nav>
-                <ul class="nav nav-pills pull-right">
-                    <li><a href="/profile">Profile</a></li>
-                    <li><a href="/logout">Logout</a></li>
-                </ul>
-            </nav>
-	    </div>
-        <h1 class="activity_description">Hello {{ session['name'] }}, these are your bucket lists</h1>
-        <div class="table-navs">
-            <a href="" class="btn btn-primary">Add Bucketlist</a>
-            <div style="float:right">
-                <span class="glyphicon glyphicon-search"></span><input type="text" placeholder="Search List"/>
-            </div>
-        </div>
-        <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Bucketlist</th>
-                <th><center>Action</center></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td><a href="/bucketlist-activities">Career</a></td>
-                <td>
-                    <center>
-                        <a href="" class="btn btn-primary">Change</a>
-                        <a href="" class="btn btn-danger">Delete</a>
-                    </center>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td><a href="/bucketlist-activities">Travel</a></td>
-                <td>
-                    <center>
-                        <a href="" class="btn btn-primary">Change</a>
-                        <a href="" class="btn btn-danger">Delete</a>
-                    </center>
-                </td>
-            </tr>
-        </tbody>
-        </table>
+{% extends "layouts/base_user.html" %}
+{% import "bootstrap/wtf.html" as wtf%}
+
+{% block title%}Smart Goals | My Bucketlists{%endblock%}
+{% block body %}
+<h1 class="activity_description">Hello {{ session['name'] }}, these are your bucket lists</h1>
+<div class="table-navs">
+    <a href="/add-bucketlist" class="btn btn-primary">Add Bucketlist</a>
+    <div style="float:right">
+        <span class="glyphicon glyphicon-search"></span><input type="text" placeholder="Search List"/>
     </div>
-</body>
-</html>
+</div>
+
+{% for message in get_flashed_messages() %}
+    {{ message }}
+{% endfor %}
+
+{{ session['bucketlists'] }}
+
+{{ b }}
+
+<table class="table table-striped">
+<thead>
+    <tr>
+        <th>#</th>
+        <th>Bucketlist</th>
+        <th><center>Action</center></th>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <th scope="row">1</th>
+        <td><a href="/bucketlist-activities">Career</a></td>
+        <td>
+            <center>
+                <a href="" class="btn btn-primary">Change</a>
+                <a href="" class="btn btn-danger">Delete</a>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <th scope="row">2</th>
+        <td><a href="/bucketlist-activities">Travel</a></td>
+        <td>
+            <center>
+                <a href="" class="btn btn-primary">Change</a>
+                <a href="" class="btn btn-danger">Delete</a>
+            </center>
+        </td>
+    </tr>
+</tbody>
+</table>
+{% endblock %}
