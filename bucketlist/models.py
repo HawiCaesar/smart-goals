@@ -28,11 +28,36 @@ class User(object):
 
 
 class Bucketlist(object):
-    def __init__(self, bucketlist_name, bucketlist_description):
+    def __init__(self):
+        self.bucketlist_name = ''
+        self.bucketlist_description = ''
+        self.bucketlists = []
+
+    def create_bucketlist(self, bucketlist_name, bucketlist_description):
+        pass
+
+    def get_bucketlists(self):
+        return self.bucketlists
+
+    def update_bucketlist(self, bucketlist_name, bucketlist_description):
         pass
 
 
+
 class Bucketlist_Activities(Bucketlist):
-    def __init__(self, bucketlist_activity_name, bucketlist_description, due_date):
+    def __init__(self):
         super(Bucketlist_Activities, self).__init__()
+        self.bucketlist_activity_name = ''
+        self.bucketlist_activity_description = ''
+        self.bucketlist_activities = []
         self.done = False
+
+    def create_bucketlist_activity(self, bucketlist_activity_name,
+                                   bucketlist_description, due_date):
+        pass
+
+    def get_bucketlist_ativities(self):
+        pass
+    
+    def update_bucketlist_activity(self):
+        pass
