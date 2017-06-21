@@ -60,6 +60,18 @@ class SmartGoalsTestCase(unittest.TestCase):
         user2 = models.User("Lucy Deeds", "lucydeeds@gmail.com", "ABC")
         self.assertTrue('@' in user2.email, "User email is not correct")
 
+    def test_user_can_create_bucketlist(self):
+        user1_bucketlist = models.Bucketlist()
+        user1_bucketlist.create_bucketlist('Career Things', 'Goals to achieve in my career')
+        self.assertEqual(user1_bucketlist.get_bucketlists, ['Career Things'],
+                         "Cannot create bucketlist")
+
+    def test_bucketlist_returns_list(self):
+        user2_bucketlist = models.Bucketlist()
+        user2_bucketlist.create_bucketlist("Traveling", "Places to visit")
+        self.assertIsInstance(user2_bucketlist.get_bucketlists, ['Traveling'],
+                              "Bucketlist does not return a list")
+
 
 
 
