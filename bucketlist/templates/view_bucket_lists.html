@@ -3,7 +3,7 @@
 
 {% block title%}Smart Goals | My Bucketlists{%endblock%}
 {% block body %}
-<h1 class="activity_description">Hello {{ session['name'] }}, these are your bucket lists</h1>
+<h1 class="activity_description">Hello {{ user[0] }}, these are your bucket lists</h1>
 <div class="table-navs">
     <a href="/add-bucketlist" class="btn btn-primary">Add Bucketlist</a>
     <div style="float:right">
