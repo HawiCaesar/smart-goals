@@ -47,31 +47,38 @@ class SmartGoalsTestCase(unittest.TestCase):
 
     ## Test if User object can be created/ Sign Up
     def test_user_class_can_be_instantiated(self):
-        user1 = models.User("James Brown", "jb@email.com", "ABC")
-        self.assertEqual(user1.getUser(), {"name":"James Brown", "email":"jb@email.com",
-                                           "password":"3c01bdbb26f358bab27f267924aa2c9a03fcfdb8"},
-                         "User not created")
+        user1 = models.User()
+        user1.create_user("James Brown", "jb@email.com", "ABC")
 
+        self.assertIsInstance(user1.getUser(), list, "Master User list is not created")
+        self.assertIsInstance(user1.getUser()[0], dict, "User dictionary is not created")
 
     # Test to check if User can update their details
-    def test_user_can_update_details(self):
-        user1 = models.User("James Brown", "jamesbr@gmail.com", "ABC")
-        self.assertEqual(user1.updateUser("James Brown", "jamesbrown@gmail.com"),
-                         {"name":"James Brown", "email":"jamesbrown@gmail.com",
-                          "password":"3c01bdbb26f358bab27f267924aa2c9a03fcfdb8"},
-                         "User details cannot be updated")
+    def test_user_can_update_email_details(self):
 
+        # update email address
+        user1 = models.User()
+        user1.clear_users()
+        user1.create_user("James Brown", "jb@email.com", "ABC")
+        user1.updateUser(0, "James Brown", "jamesbrown@gmail.com")
 
-    def test_user_enters_blank_details(self):
-        user1 = models.User("", "", "")
-        self.assertEqual(user1.getUser(), {"name":'', "email":'',
-                                           "password":'da39a3ee5e6b4b0d3255bfef95601890afd80709'},
-                         "User Should not be allowed blank form submission")
+        updated_email = ""
 
+        for i in user1.getUser():
+            updated_email = i['email']
 
-    def test_user_email_is_correct_format(self):
-        user2 = models.User("Lucy Deeds", "lucydeeds@gmail.com", "ABC")
-        self.assertTrue('@' in user2.email, "User email is not correct")
+        self.assertEqual(updated_email, "jamesbrown@gmail.com", "User details cannot be updated")
+
+    def test_user_enters_blank_email_details(self):
+        user1 = models.User()
+        user1.create_user("", "", "")
+
+        blank_email = ""
+
+        for i in user1.getUser():
+            blank_email = i['email']
+
+        self.assertEqual(blank_email, "", "User Should not be allowed blank form submission")
 
 
     # Bucket list test cases
