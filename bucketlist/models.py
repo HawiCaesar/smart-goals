@@ -62,19 +62,46 @@ class Bucketlist(object):
         self.all_bucketlists = []
 
 class Bucketlist_Activities(Bucketlist):
+    all_bucketlists_activities = []
+    activity_details = {}
     def __init__(self):
         super(Bucketlist_Activities, self).__init__()
-        self.bucketlist_activity_name = ''
-        self.bucketlist_activity_description = ''
-        self.bucketlist_activities = []
-        self.done = False
+        self.bucketlist_activities = {}
 
-    def create_bucketlist_activity(self, bucketlist_activity_name,
-                                   bucketlist_description, due_date):
-        pass
+    def create_bucketlist_activity(self, bucketlist_key, bucketlist_activity_name,
+                                   due_date, done):
+
+        self.activity_details[bucketlist_activity_name] = {bucketlist_key:due_date}
+        self.all_bucketlists_activities.append({bucketlist_activity_name:done})
 
     def get_bucketlist_ativities(self):
-        pass
+        return self.all_bucketlists_activities
 
-    def update_bucketlist_activity(self):
-        pass
+
+    def get_bucketlists_activity_detail(self, bucketlist_activity_key):
+        return self.activity_details[bucketlist_activity_key]
+
+
+    def update_bucketlist_activity(self, all_bucketlist_activity_key,
+                                   bucketlist_name,
+                                   bucketlist_activity_name,
+                                   due_date, done):
+
+        # for i in self.all_bucketlists_activities:
+        self.all_bucketlists_activities[all_bucketlist_activity_key] = {
+            bucketlist_activity_name:done}
+
+
+        self.activity_details[bucketlist_activity_name] = {bucketlist_name:due_date}
+
+        return self.all_bucketlists_activities
+
+    def clear_bucketlist_activity(self):
+        self.all_bucketlists_activities = []
+
+    def delete_bucketlist_activity(self, bucketlist_activity_key):
+
+        self.all_bucketlists_activities.pop(bucketlist_activity_key)
+        return self.all_bucketlists_activities
+
+        

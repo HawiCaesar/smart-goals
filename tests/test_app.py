@@ -134,6 +134,58 @@ class SmartGoalsTestCase(unittest.TestCase):
         self.assertEqual(count, 1, "Cannot remove bucketlist items")
 
 
+    def test_user_can_create_bucketlist_activity(self):
+        user7_bucketlist = models.Bucketlist()
+        user7_bucketlist.clear_bucketlist()
+        user7_bucketlist.create_bucketlist('Career Things', 'Career milestones')
+
+        bucketlist_activity = models.Bucketlist_Activities()
+        bucketlist_activity.clear_bucketlist_activity()
+        bucketlist_activity.create_bucketlist_activity('Career Things', 'Achieve A',
+                                                       '01/01/2018', False)
+
+        self.assertEqual(bucketlist_activity.get_bucketlist_ativities(),
+                         [{'Achieve A':False}], "User cannot create a bucketlist")
+
+        self.assertEqual(bucketlist_activity.get_bucketlists_activity_detail('Achieve A'),
+                         {'Career Things':'01/01/2018'},
+                         "User does not have activity details")
+
+
+    def test_user_can_update_bucketlist_activity(self):
+        user8_bucketlist = models.Bucketlist()
+        user8_bucketlist.clear_bucketlist()
+        user8_bucketlist.create_bucketlist('Career Things', 'Career milestones')
+
+        bucketlist_activity = models.Bucketlist_Activities()
+        bucketlist_activity.clear_bucketlist_activity()
+        bucketlist_activity.create_bucketlist_activity('Career Things', 'Achieve A',
+                                                       '01/01/2018', False)
+
+
+        bucketlist_activity.update_bucketlist_activity(0, 'Career Things',
+                                                       'Achieve promotion',
+                                                       '01/02/2018', False)
+
+        self.assertEqual(bucketlist_activity.get_bucketlist_ativities()[0],
+                         {'Achieve promotion':False})
+
+    def test_user_can_remove_bucketlist_activity(self):
+        user9_bucketlist = models.Bucketlist()
+        user9_bucketlist.clear_bucketlist()
+        user9_bucketlist.create_bucketlist('Travel things', 'Places to travel')
+
+        bucketlist_activity = models.Bucketlist_Activities()
+        bucketlist_activity.clear_bucketlist_activity()
+        bucketlist_activity.create_bucketlist_activity('Travel Things', 'Travel to Z',
+                                                       '01/01/2018', False)
+
+        bucketlist_activity.create_bucketlist_activity('Travel things', 'Travel to B',
+                                                       '01/02/2018', False)
+
+        count = len(bucketlist_activity.delete_bucketlist_activity(0))
+
+        self.assertEqual(count, 1, "Cannot delete bucketlist activity")
 
 
 
