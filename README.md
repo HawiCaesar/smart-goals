@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/HawiCaesar/smart-goals.svg?branch=master)](https://travis-ci.org/HawiCaesar/smart-goals)
+[![Build Status](https://travis-ci.org/HawiCaesar/smart-goals.svg?branch=develop)](https://travis-ci.org/HawiCaesar/smart-goals)
+[![Coverage Status](https://coveralls.io/repos/github/HawiCaesar/smart-goals/badge.svg?develop)](https://coveralls.io/github/HawiCaesar/smart-goals)
 
 # Smart Goals
 
@@ -9,27 +10,58 @@ Smart Goals allows you to register and achieve all these feats and also
 allow you to tick off what you have done.
 
 ## Prerequistes
-The `requirements.txt` file has all requirements for this app
+The `requirements.txt` file has all requirements for this application
 
-## Usage
-#### Register with the application
-#### Create a bucket list(s) and its description
-#### Update a bucket list
-#### Delete a bucket list
-#### View all bucket lists
-#### Create a bucket list activity
-#### Check off a completed activity
-#### View all bucket list activites
-#### View all checked activites
-#### View all incompleted activites
-#### Update a bucket list activity
-#### Delete a bucket list activity
+### Installing
+Install python on your system
 
-## Tests
-To run tests change directory to the tests folder and run the tests using the python test tool you have e.g. for pytest
+On Linux:
+```
+sudo apt install python3
+```
+
+On Windows:
 
 ```
-pytest test_bucket_list_app.py
+run python-3.5.2.exe
+```
+
+Clone the repository using the url:
+
+```
+git clone https://github.com/HawiCaesar/smart-goals_app.git
+```
+Install pip
+Install virtual environment and virtual environment wrapper to use this 
+You can use pip
+```
+pip install virtualenv
+pip install virtualenvwrapper
+```
+Activiate your environment (Linux)
+
+```
+source /usr/local/bin/virtualenvwrapper.sh
+mkvirtualenv --python=/usr/bin/python3 nameOfEnvironment
+```
+To get all the requirments like Flask,Jinja, WTF Forms, nosetests
+```
+pip install -r requirement.txt
+```
+
+## Implemented Features
+#### Register with the application
+#### Create a bucket list(s) and its description
+#### View all bucket lists
+#### Create a bucket list activity
+#### View all bucket list activites
+
+
+## Tests
+To run tests
+
+```
+nosetests tests/test_app.py
 ```
 
 ## Authors
