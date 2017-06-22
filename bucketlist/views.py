@@ -42,7 +42,7 @@ def new_user_login():
                 else:
                     return redirect(url_for('new_user_login'))
 
-        return redirect(url_for('new_user_login'))
+        return render_template("login.html", form=form)
 
 @app.route("/sign-up")
 def signup():
@@ -68,7 +68,7 @@ def create_user():
             flash("You have successfully registered! Kindly login")
 
             return redirect(url_for('login'))
-        return redirect(url_for('signup'))
+        return render_template("sign_up.html", form=form)
 
 
 @app.route('/profile')
@@ -111,11 +111,13 @@ def create_bucketlist():
 
         return render_template('view_bucket_lists.html', bucketlists=bucketlist.get_bucketlists())
 
+    return render_template('view_bucket_lists.html', form=form)
+
 
 @app.route("/bucketlist-activities/<id>")
 def user_bucket_lists_activities(id):
-    #return render_template('view_bucket_list_activities')
-    print(id)
+
+    return render_template('view_bucket_list_activities.html')
 
 
 @app.errorhandler(404)
