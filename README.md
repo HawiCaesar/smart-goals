@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/HawiCaesar/smart-goals.svg?branch=master)](https://travis-ci.org/HawiCaesar/smart-goals)
+
 # Smart Goals
 
 What would you like to do in the next few years? Climbs a mountain? Learn to
@@ -38,4 +40,4 @@ pytest test_bucket_list_app.py
 
 * Python 3.5 Documentation
 * Flask 0.12.2 Documentation
-* Various internet resources
+* Various internet resources and Friends
