@@ -44,26 +44,6 @@ def new_user_login():
 
         return redirect(url_for('new_user_login'))
 
-@app.route('/auth/user', methods=['GET', 'POST'])
-def user_login():
-    form = LoginForm()
-
-    if request.method == 'POST':
-
-        if form.validate_on_submit():
-
-            user = models.User("Return User A",
-                               request.form.get('email'), request.form.get('password'))
-            user_details = user.getUser()
-
-            session['name'] = user_details['name']
-            session['email'] = user_details['email']
-            session['password'] = user_details['password']
-
-            return redirect(url_for('user_bucket_lists'))
-        return redirect(url_for('user_login'))
-
-
 @app.route("/sign-up")
 def signup():
     form = SignUpForm(request.form)

@@ -19,12 +19,7 @@
   {% endif %}
 {% endwith %}
 <div class="div-form">
-	{% if session['new_user']==1 %}
 	<form  method="POST" action="/auth/login">
-	{% else %}
-	<form  method="POST" action="/auth/user">
-	{% endif %}
-
 		{{ form.hidden_tag() }}
 	
 		{{ wtf.form_field(form.email) }}
