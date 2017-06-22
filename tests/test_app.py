@@ -118,6 +118,7 @@ class SmartGoalsTestCase(unittest.TestCase):
 
     def test_user_can_make_more_than_one_bucketlist(self):
         user5_bucketlist = models.Bucketlist()
+        user5_bucketlist.clear_bucketlist()
         user5_bucketlist.create_bucketlist('Movie Watch', 'Must Watch these')
         user5_bucketlist.create_bucketlist('Attend 5 Live events', 'Site A, has all sites')
 
