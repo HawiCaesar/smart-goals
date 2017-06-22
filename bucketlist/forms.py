@@ -15,6 +15,8 @@ class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
 
+    submit = SubmitField("Login")
+
 class BucketlistForm(FlaskForm):
     bucketlistname = StringField('Bucketlist name', validators=[DataRequired()])
     simple_description = TextAreaField("Simple Description", validators=[DataRequired()])
