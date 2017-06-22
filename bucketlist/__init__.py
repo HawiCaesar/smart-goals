@@ -11,4 +11,4 @@ from bucketlist import views
 # Load the config file
 app.config.from_object(app_config['development'])
 
-app.config['SECRET_KEY'] = "q38FGSFDsyrefbhj54"
+#app.config['SECRET_KEY'] = "q38FGSFDsyrefbhj54"
