@@ -128,9 +128,10 @@ def create_bucketlist():
         return render_template('view_bucket_lists.html', bucketlists=bucketlist.get_bucketlists())
 
 
-@app.route("/bucketlist-activities")
-def user_bucket_lists_activities():
-    return render_template('view_bucket_list_activities')
+@app.route("/bucketlist-activities/<id>")
+def user_bucket_lists_activities(id):
+    #return render_template('view_bucket_list_activities')
+    print(id)
 
 
 @app.errorhandler(404)
