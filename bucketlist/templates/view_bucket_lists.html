@@ -28,20 +28,21 @@
     </thead>
     <tbody> 
             {% for bucketlist in bucketlists %}
+            <tr>
+                <th scope="row">{{ loop.index }}{% set list_index = loop.index %}</th> 
                 {% for key, value in bucketlist.items() %}
-                     
-                    <tr>
-                         <th scope="row">{{ loop.index }}</th> 
-                        <td><a href="/bucketlist-activities/{{ loop.index }}">{{ key }}</a></td>
+                    
+                        <td><a href="/bucketlist-activities/{{ list_index }}/{{ key }}">{{ key }}</a></td>
                         <td><center>{{ value }}</center></td>
+                        
+                {% endfor %}
                         <td>
                             <center>
-                                <a href="" class="btn btn-primary">Change</a>
-                                <a href="" class="btn btn-danger">Delete</a>
+                                <a href="/bucketlist-activities/{{ loop.index }}/{{ key }}" class="btn btn-primary">Change</a>
+                                <a href="/delete-bucketlist/{{ loop.index }}" class="btn btn-danger">Delete</a>
                             </center>
                         </td>
-                    </tr>
-                {% endfor %}
+            </tr>
             {% endfor %}
     </tbody>
     </table>
