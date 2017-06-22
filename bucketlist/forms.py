@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 
-from wtforms import StringField, BooleanField, PasswordField, TextAreaField, SubmitField
+from wtforms import StringField, BooleanField, PasswordField, TextAreaField, SubmitField, DateField
 
 from wtforms.validators import DataRequired, Email, EqualTo
 
@@ -21,3 +21,8 @@ class BucketlistForm(FlaskForm):
     bucketlistname = StringField('Bucketlist name', validators=[DataRequired()])
     simple_description = TextAreaField("Simple Description", validators=[DataRequired()])
     submit = SubmitField("Add Bucketlist")
+
+class ActivityForm(FlaskForm):
+    bucketlist_activity_name = StringField('Bucketlist Activity Name', validators=[DataRequired()])
+    date = StringField("Have this done by", validators=[DataRequired()])
+    submit = SubmitField("Add Activity")
