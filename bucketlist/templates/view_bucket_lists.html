@@ -15,39 +15,39 @@
     {{ message }}
 {% endfor %}
 
-{{ session['bucketlists'] }}
 
-{{ b }}
-
-<table class="table table-striped">
-<thead>
-    <tr>
-        <th>#</th>
-        <th>Bucketlist</th>
-        <th><center>Action</center></th>
-    </tr>
-</thead>
-<tbody>
-    <tr>
-        <th scope="row">1</th>
-        <td><a href="/bucketlist-activities">Career</a></td>
-        <td>
-            <center>
-                <a href="" class="btn btn-primary">Change</a>
-                <a href="" class="btn btn-danger">Delete</a>
-            </center>
-        </td>
-    </tr>
-    <tr>
-        <th scope="row">2</th>
-        <td><a href="/bucketlist-activities">Travel</a></td>
-        <td>
-            <center>
-                <a href="" class="btn btn-primary">Change</a>
-                <a href="" class="btn btn-danger">Delete</a>
-            </center>
-        </td>
-    </tr>
-</tbody>
-</table>
+{% if bucketlists %} 
+    <table class="table table-striped">
+    <thead>
+        <tr>
+            <!-- <th>#</th> -->
+            <th>Bucketlist</th>
+            <th><center>More About it</center></th>
+            <th><center>Action</center></th>
+        </tr>
+    </thead>
+    <tbody> 
+            
+            {% for bucketlist in bucketlists %}
+                {% for key, value in bucketlist.items() %}
+                    <tr>
+                        <!-- <th scope="row"></th> -->
+                        <td><a href="/bucketlist-activities/{{ count}}">{{ key }}</a></td>
+                        <td><center>{{ value }}</center></td>
+                        <td>
+                            <center>
+                                <a href="" class="btn btn-primary">Change</a>
+                                <a href="" class="btn btn-danger">Delete</a>
+                            </center>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+    </tbody>
+    </table>
+{% else %}
+<div class="alert alert-info" role="alert">
+  <strong>Nothing yet!</strong> Click on the "Add Bucketlist" to have a new bucketlist
+</div>
+{% endif %}
 {% endblock %}
