@@ -34,7 +34,7 @@ class User(object):
         return all_users
 
     def clear_users(self):
-        all_users = []
+        all_users[:] = []
 
 class Bucketlist(object):
      # master bucketlist
@@ -74,7 +74,8 @@ class Bucketlist(object):
 
     def clear_bucketlist(self):
         """ Remove all items in the bucketlist """
-        all_bucketlists = []
+        all_bucketlists[:] = []
+        
 
 
 class Bucketlist_Activities(Bucketlist):
@@ -112,10 +113,21 @@ class Bucketlist_Activities(Bucketlist):
         return all_bucketlists_activities
 
     def clear_bucketlist_activity(self):
-        all_bucketlists_activities = []
+        all_bucketlists_activities[:] = []
 
     def delete_bucketlist_activity(self, bucketlist_activity_key):
 
         all_bucketlists_activities.pop(bucketlist_activity_key)
         return all_bucketlists_activities
-        
+
+
+user1_bucketlist = Bucketlist()
+user1_bucketlist.clear_bucketlist()
+user1_bucketlist.create_bucketlist('Career Things', 'Goals to achieve in my career')
+
+
+user2_bucketlist = Bucketlist()
+user2_bucketlist.clear_bucketlist()
+user2_bucketlist.create_bucketlist("Traveling", "Places to visit")
+
+print(all_bucketlists)
