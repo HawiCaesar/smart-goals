@@ -71,6 +71,10 @@ def create_user():
         return redirect(url_for('signup'))
 
 
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
+
 
 @app.route("/logout")
 def logout():
