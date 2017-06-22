@@ -119,15 +119,3 @@ class Bucketlist_Activities(Bucketlist):
 
         all_bucketlists_activities.pop(bucketlist_activity_key)
         return all_bucketlists_activities
-
-
-user1_bucketlist = Bucketlist()
-user1_bucketlist.clear_bucketlist()
-user1_bucketlist.create_bucketlist('Career Things', 'Goals to achieve in my career')
-
-
-user2_bucketlist = Bucketlist()
-user2_bucketlist.clear_bucketlist()
-user2_bucketlist.create_bucketlist("Traveling", "Places to visit")
-
-print(all_bucketlists)
