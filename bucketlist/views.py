@@ -1,8 +1,9 @@
 from flask import render_template, request, redirect, url_for, session, flash, Markup
 
 from bucketlist import app, models
-from .forms import SignUpForm, LoginForm, BucketlistForm
+from .forms import SignUpForm, LoginForm, BucketlistForm, ActivityForm
 import hashlib
+from .models import all_users, all_bucketlists, all_bucketlists_activities
 
 
 @app.route('/')
@@ -22,58 +23,79 @@ def contact():
 
 @app.route('/login')
 def login():
-    form = LoginForm(request.form)
+    form = LoginForm()
     return render_template("login.html", form=form)
 
 
-@app.route('/auth/login', methods=['GET', 'POST'])
+@app.route('/auth/', methods=['GET', 'POST'])
 def new_user_login():
-    form = LoginForm()
-    if request.method == 'POST':
-        if form.validate_on_submit():
 
-            if request.form.get('email') == session['email']:
+    """
+    request.form does not return data when submiting the form the SECOND time
 
-                hash_object = hashlib.sha1(request.form.get('password').encode())
-                entered_password = hash_object.hexdigest()
+    """
 
-                if session['password'] == entered_password:
-                    return redirect(url_for('user_bucket_lists'))
-                else:
-                    return redirect(url_for('new_user_login'))
+    form = LoginForm(request.form)
 
-        return render_template("login.html", form=form)
+    if form.validate_on_submit():
+
+        #user = models.User()
+        current_user = []
+
+        hash_object = hashlib.sha1(request.form.get('password').encode())
+        entered_password = hash_object.hexdigest()
+
+        for i in all_users:
+            if request.form.get('email') == i['email'] and i['password'] == entered_password:
+                current_user.append(i['name'])
+                current_user.append(i['email'])
+                current_user.append(i['password'])
+
+                return render_template("view_bucket_lists.html", form=form, user=current_user)
+
+            else:
+                return redirect(url_for('new_user_login'))
+
+
+
+def get_current_user():
+    user = models.User()
+    current_user = []
+    for i in all_users:
+        current_user.append(i['name'])
+        current_user.append(i['email'])
+        current_user.append(i['password'])
+
+    return current_user
+
 
 @app.route("/sign-up")
 def signup():
-    form = SignUpForm(request.form)
+    form = SignUpForm()
     return render_template("sign_up.html", form=form)
+
 
 @app.route("/sign-up/new-user", methods=['GET', 'POST'])
 def create_user():
 
-    form = SignUpForm()
+    form = SignUpForm(request.form)
 
-    if request.method == 'POST':
+    if form.validate_on_submit():
+        user = models.User()
+        user.create_user(request.form.get('fullname'),
+                         request.form.get('email'), request.form.get('password'))
 
-        if form.validate_on_submit():
-            user = models.User(request.form.get('fullname'),
-                               request.form.get('email'), request.form.get('password'))
-            user_details = user.getUser()
+        success = Markup("<div class='alert alert-success' role='alert'>\
+                        <strong>Done! </strong>You have successfully registered! Kindly Login\
+                        </div>")
 
-            session['name'] = user_details['name']
-            session['email'] = user_details['email']
-            session['password'] = user_details['password']
+        flash(success)
 
-            flash("You have successfully registered! Kindly login")
+        form_login = LoginForm()
+        return render_template("login.html", form=form_login)
 
-            return redirect(url_for('login'))
-        return render_template("sign_up.html", form=form)
+    return render_template("sign_up.html", form=form)
 
-
-@app.route('/profile')
-def profile():
-    return render_template('profile.html')
 
 
 @app.route("/logout")
@@ -85,7 +107,8 @@ def logout():
 
 @app.route("/my-bucketlists/")
 def user_bucket_lists():
-    return render_template('view_bucket_lists.html')
+
+    return render_template('view_bucket_lists.html', user=get_current_user(), bucketlists=all_bucketlists)
 
 
 @app.route("/add-bucketlist")
@@ -109,15 +132,67 @@ def create_bucketlist():
                          Bucketlist is created.</div>")
         flash(success)
 
-        return render_template('view_bucket_lists.html', bucketlists=bucketlist.get_bucketlists())
+        return render_template('view_bucket_lists.html', bucketlists=bucketlist.get_bucketlists(),
+                               user=get_current_user())
 
     return render_template('view_bucket_lists.html', form=form)
 
 
-@app.route("/bucketlist-activities/<id>")
-def user_bucket_lists_activities(id):
+@app.route("/bucketlist-activities/<id>/<bucketlist>")
+def user_bucket_lists_activities(id, bucketlist):
 
-    return render_template('view_bucket_list_activities.html')
+    id = int(id)
+
+    bucketlist_details = []
+    bucketlist_details.append(id)
+    bucketlist_details.append(bucketlist)
+
+    return render_template('view_bucket_list_activities.html',
+                           bucketlist_info=bucketlist_details,
+                           activities=all_bucketlists_activities)
+
+@app.route("/add-bucketlist-activity/<id>")
+def activity_page(id):
+    form = ActivityForm()
+
+    bucketlist_key = int(id)
+    bucket = ""
+
+    for key, value in all_bucketlists[bucketlist_key].items():
+        bucket = key
+
+    return render_template('add_activity.html', form=form, bucketlist=bucket, key=bucketlist_key)
+
+@app.route("/create-bucketlist-activity/<id>/<bucketlist>",  methods=['GET', 'POST'])
+def create_activity(id, bucketlist):
+
+    form = ActivityForm(request.form)
+
+    bucketlist_key = int(id)
+    bucket = bucketlist
+
+    if form.validate_on_submit():
+        activity = models.Bucketlist_Activities()
+        activity.create_bucketlist_activity(bucket,
+                                            request.form.get("bucketlist_activity_name"),
+                                            request.form.get("date"), False)
+
+        success = Markup("<div class='alert alert-success' role='alert'>\
+                        <strong>Done! </strong>"+request.form.get("bucketlist_activity_name")+"\
+                        </div>")
+
+        flash(success)
+
+        current_bucket = [id, bucket]
+
+        return render_template('view_bucket_list_activities.html',
+                               activities=all_bucketlists_activities,
+                               bucketlist_info=current_bucket)
+
+    else:
+
+        return render_template('add_activity.html', form=form)
+
 
 
 @app.errorhandler(404)
