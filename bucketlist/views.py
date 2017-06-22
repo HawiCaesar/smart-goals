@@ -84,7 +84,7 @@ def create_user():
             session['name'] = user_details['name']
             session['email'] = user_details['email']
             session['password'] = user_details['password']
-            session['new_user'] = 1
+
             flash("You have successfully registered! Kindly login")
 
             return redirect(url_for('login'))
@@ -124,8 +124,8 @@ def create_bucketlist():
                         <strong>Done! </strong>Your "+request.form.get("bucketlistname")+"\
                          Bucketlist is created.</div>")
         flash(success)
-        session["bucketlists"] = bucketlist.get_bucketlists()
-        return redirect(url_for('user_bucket_lists'))
+
+        return render_template('view_bucket_lists.html', bucketlists=bucketlist.get_bucketlists())
 
 
 @app.route("/bucketlist-activities")
