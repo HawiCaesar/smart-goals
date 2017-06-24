@@ -30,43 +30,54 @@ def login():
 @app.route('/auth/', methods=['GET', 'POST'])
 def new_user_login():
 
-    """
-    request.form does not return data when submiting the form the SECOND time
-
-    """
-
     form = LoginForm(request.form)
 
     if form.validate_on_submit():
 
-        #user = models.User()
-        current_user = []
-
         hash_object = hashlib.sha1(request.form.get('password').encode())
         entered_password = hash_object.hexdigest()
 
-        for i in all_users:
-            if request.form.get('email') == i['email'] and i['password'] == entered_password:
-                current_user.append(i['name'])
-                current_user.append(i['email'])
-                current_user.append(i['password'])
+        #User exists
+        if request.form.get('email') in all_users:
 
-                return render_template("view_bucket_lists.html", form=form, user=current_user)
+            if all_users[request.form.get('email')][2] == entered_password:
 
+                return render_template("view_bucket_lists.html",
+                                       user=all_users[request.form.get('email')])
             else:
-                return redirect(url_for('new_user_login'))
+                error = Markup("<div class='alert alert-danger' role='alert'>\
+                        <strong>Inavlid Credentials! </strong>Either your email or password is wrong!\
+                        Please enter correct credentials!\
+                        </div>")
+
+                flash(error)
+                return render_template("login.html", form=LoginForm())
+
+        else:
+            error = Markup("<div class='alert alert-danger' role='alert'>\
+                        <strong>Inavlid Credentials</strong> Either your email or password is wrong!\
+                        Please enter correct credentials!\
+                        </div>")
+            flash(error)
+            return render_template("login", form=LoginForm())
+
+
+    else:
+        return render_template("login", form=LoginForm())
 
 
 
-def get_current_user():
-    user = models.User()
-    current_user = []
-    for i in all_users:
-        current_user.append(i['name'])
-        current_user.append(i['email'])
-        current_user.append(i['password'])
 
-    return current_user
+
+# def get_current_user():
+#     user = models.User()
+#     current_user = []
+#     for i in all_users:
+#         current_user.append(i['name'])
+#         current_user.append(i['email'])
+#         current_user.append(i['password'])
+
+#     return current_user
 
 
 @app.route("/sign-up")
@@ -108,8 +119,8 @@ def logout():
 @app.route("/my-bucketlists/")
 def user_bucket_lists():
 
-    return render_template('view_bucket_lists.html', user=get_current_user(), bucketlists=all_bucketlists)
-
+    #return render_template('view_bucket_lists.html', user=get_current_user(), bucketlists=all_bucketlists)
+    pass
 
 @app.route("/add-bucketlist")
 def add_bucketlist():
@@ -133,7 +144,7 @@ def create_bucketlist():
         flash(success)
 
         return render_template('view_bucket_lists.html', bucketlists=bucketlist.get_bucketlists(),
-                               user=get_current_user())
+                               user="a")
 
     return render_template('view_bucket_lists.html', form=form)
 
