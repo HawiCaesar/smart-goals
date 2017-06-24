@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import hashlib # Used for hashing
-all_users = []
+all_users = {}
 all_bucketlists = []
 all_bucketlists_activities = []
 
@@ -15,11 +15,11 @@ class User(object):
         hash_object = hashlib.sha1(password.encode())
         self.password = hash_object.hexdigest()
 
-        all_users.append({'name':self.fullname, 'email':self.email, 'password': self.password})
+        all_users[self.email] = [self.fullname, self.email, self.password]
 
     # Get User details
-    def getUser(self):
-        return all_users
+    def getUser(self, email):
+        return all_users[email]
 
 
     def updateUser(self, user_key, full_name, email):
@@ -122,23 +122,4 @@ class Bucketlist_Activities(Bucketlist):
 
 
 
-user7_bucketlist = Bucketlist()
-user7_bucketlist.clear_bucketlist()
-user7_bucketlist.create_bucketlist('Career Things', 'Career milestones')
-user7_bucketlist.create_bucketlist('Travel Manenos', 'Places to travel')
-
-bucketlist_activity = Bucketlist_Activities()
-
-bucketlist_activity.clear_bucketlist_activity()
-bucketlist_activity.create_bucketlist_activity('Career Things', 'Achieve A',
-                                                       '01/01/2018', False)
-
-bucketlist_activity.create_bucketlist_activity('Career Things', 'Achieve B',
-                                                       '01/01/2018', False)
-
-
-bucketlist_activity.create_bucketlist_activity('Travel Manenos', 'Go to A',
-                                                '01/01/2018', False)
-
-print(bucketlist_activity.get_bucketlist_ativities())
                             
