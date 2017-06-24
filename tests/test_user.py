@@ -12,7 +12,7 @@ class UserSmartGoalsTestCase(unittest.TestCase):
     def test_user_class_can_be_instantiated(self):
 
         self.user1.create_user("James Brown", "jb@email.com", "ABC")
-        self.assertIsInstance(self.user1.getUser("jb@email.com"), list,
+        self.assertIsInstance(models.all_users["jb@email.com"], list,
                               "Master User list is not created")
 
     def test_more_than_one_user(self):
