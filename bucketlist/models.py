@@ -21,18 +21,6 @@ class User(object):
     def getUser(self, email):
         return all_users[email]
 
-
-    def updateUser(self, user_key, full_name, email):
-        self.fullname = full_name
-        self.email = email
-
-        update_user = all_users[user_key]
-        update_user = {'name':self.fullname, 'email':self.email, 'password': self.password}
-
-        all_users[user_key] = update_user
-
-        return all_users
-
     def clear_users(self):
         all_users[:] = []
 
