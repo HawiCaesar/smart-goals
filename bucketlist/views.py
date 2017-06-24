@@ -5,7 +5,8 @@ from .forms import SignUpForm, LoginForm, BucketlistForm, ActivityForm
 import hashlib
 from .models import all_users, all_bucketlists, all_bucketlists_activities
 
-current_user = None
+global current_user
+current_user = []
 
 
 @app.route('/')
@@ -49,7 +50,7 @@ def new_user_login():
                 return redirect(url_for('user_bucket_lists'))
             else:
                 error = Markup("<div class='alert alert-danger' role='alert'>\
-                        <strong>Inavlid Credentials! </strong>Either your email or password is wrong!\
+                        <strong>Invalid Credentials! </strong>Either your email or password is wrong!\
                         Please enter correct credentials!\
                         </div>")
 
@@ -58,7 +59,7 @@ def new_user_login():
 
         else:
             error = Markup("<div class='alert alert-danger' role='alert'>\
-                        <strong>Inavlid Credentials</strong> Either your email or password is wrong!\
+                        <strong>Invalid Credentials</strong> Either your email or password is wrong!\
                         Please enter correct credentials!\
                         </div>")
             flash(error)
@@ -74,17 +75,18 @@ def set_current_user(user_details):
     global current_user
     current_user = user_details
 
-    print(current_user)
-
 ## Get user details
 def check_current_user():
     logged_in = False
 
+    global current_user
+    print(current_user)
+
     details_count = len(current_user)
 
     if details_count == 0:
-        return logged_in
-    elif details_count == 3:
+        logged_in = False
+    else:
         logged_in = True
 
     return logged_in
@@ -102,26 +104,33 @@ def create_user():
     form = SignUpForm(request.form)
 
     if form.validate_on_submit():
-        user = models.User()
-        user.create_user(request.form.get('fullname'),
-                         request.form.get('email'), request.form.get('password'))
 
-        print(all_users)
-        print("*************************************")
+        if request.form.get('email') in all_users:
 
-        success = Markup("<div class='alert alert-success' role='alert'>\
-                        <strong>Done! </strong>You have successfully registered! Kindly Login\
-                        </div>")
+            error = Markup("<div class='alert alert-danger' role='alert'>\
+                            <strong>User Exisits!</strong> The Email entered already exists!\
+                            </div>")
+            flash(error)
+            return redirect(url_for("signup"))
 
-        flash(success)
+        else:
+            user = models.User()
+            user.create_user(request.form.get('fullname'),
+                             request.form.get('email'), request.form.get('password'))
 
-        form_login = LoginForm()
-        return render_template("login.html", form=form_login)
+            success = Markup("<div class='alert alert-success' role='alert'>\
+                            <strong>Done! </strong>You have successfully registered! Kindly Login\
+                            </div>")
+
+            flash(success)
+
+            form_login = LoginForm()
+            return render_template("login.html", form=form_login)
 
     return render_template("sign_up.html", form=form)
 
 
-
+# Log out and set the current user to empty list
 @app.route("/logout")
 def logout():
     global current_user
@@ -134,8 +143,9 @@ def logout():
 def user_bucket_lists():
 
     if check_current_user() is True:
-        return render_template('view_bucket_lists.html',
-                               user=current_user, bucketlists=all_bucketlists)
+
+        return render_template('view_bucket_lists.html', user=current_user,
+                               bucketlists=all_bucketlists)
 
     else:
         error = Markup("<div class='alert alert-danger' role='alert'>\
@@ -146,21 +156,34 @@ def user_bucket_lists():
         flash(error)
         return redirect(url_for("login"))
 
+
 @app.route("/add-bucketlist")
 def add_bucketlist():
-    check_current_user()
-    form = BucketlistForm()
-    return render_template("add_bucket_list.html", form=form)
+    if check_current_user() is True:
+        form = BucketlistForm()
+        return render_template("add_bucket_list.html", form=form)
+
+    else:
+        error = Markup("<div class='alert alert-danger' role='alert'>\
+                        <strong>Login Required! </strong>You must be logged in to\
+                        to access that page\
+                        </div>")
+
+        flash(error)
+        return redirect(url_for("login"))
+
 
 
 @app.route("/create-bucketlist", methods=['GET', 'POST'])
 def create_bucketlist():
     form = BucketlistForm()
 
-    if form.validate_on_submit():
+    global current_user
+
+    if request.method == "POST" and form.validate_on_submit():
 
         bucketlist = models.Bucketlist()
-        bucketlist.create_bucketlist(request.form.get("bucketlistname"),
+        bucketlist.create_bucketlist(current_user, request.form.get("bucketlistname"),
                                      request.form.get("simple_description"))
 
         success = Markup("<div class='alert alert-success' role='alert'>\
@@ -168,8 +191,8 @@ def create_bucketlist():
                          Bucketlist is created.</div>")
         flash(success)
 
-        return render_template('view_bucket_lists.html', bucketlists=bucketlist.get_bucketlists(),
-                               user="a")
+        return render_template('view_bucket_lists.html',
+                               bucketlists=all_bucketlists[current_user])
 
     return render_template('view_bucket_lists.html', form=form)
 
