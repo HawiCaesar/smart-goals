@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import hashlib # Used for hashing
 all_users = {}
-all_bucketlists = []
+all_bucketlists = {}
 all_bucketlists_activities = []
 
 class User(object):
@@ -17,53 +17,55 @@ class User(object):
 
         all_users[self.email] = [self.fullname, self.email, self.password]
 
-    # Get User details
-    def getUser(self, email):
-        return all_users[email]
-
-    def clear_users(self):
-        all_users[:] = []
 
 class Bucketlist(object):
-     # master bucketlist
+
     bucketlist = {}
 
-    def create_bucketlist(self, bucketlist_name, bucketlist_description):
+    def create_bucketlist(self, current_user, bucketlist_name, bucketlist_description):
         """ Create a bucketlist and append it to the master bucketlist"""
 
-        self.bucketlist[bucketlist_name] = bucketlist_description
-        all_bucketlists.append({bucketlist_name:bucketlist_description})
+        self.bucketlist = {bucketlist_name:bucketlist_description}
+
+        if current_user in all_bucketlists:
+            all_bucketlists[current_user][0].update(self.bucketlist)
+
+        else:
+            all_bucketlists[current_user] = [self.bucketlist]
 
 
-    def get_bucketlists(self):
-        """ Return master bucketlist """
+    # def get_bucketlists(self):
+    #     """ Return master bucketlist """
 
-        return all_bucketlists
+    #     return all_bucketlists
 
 
-    def update_bucketlist(self, bucketlist_key, bucketlist_name, bucketlist_description):
+    def update_bucketlist(self, bucketlist_key, old_bucketlist_name, 
+                          new_bucketlist_name, new_bucketlist_description):
+
         """ get the bucket list key and update the new details of the bucketlist """
 
-        update_bucklist = all_bucketlists[bucketlist_key]
+        user_bucketlists = all_bucketlists[bucketlist_key][0]
 
-        update_bucklist = {bucketlist_name: bucketlist_description}
+        update_bucketlist = user_bucketlists[old_bucketlist_name]
 
-        all_bucketlists[bucketlist_key] = update_bucklist
+        update_bucketlist = {new_bucketlist_name:new_bucketlist_description}
 
-        return all_bucketlists
+        del user_bucketlists[old_bucketlist_name]
+
+        all_bucketlists[bucketlist_key][0].update(update_bucketlist)
 
 
-    def delete_bucketlist(self, bucketlist_key):
-        """ remove a bucketlist via a bucketlist key .pop for lists"""
+    def delete_bucketlist(self, bucketlist_key, bucketlist_name):
+        """ remove a bucketlist via a bucketlist key .pop for dictionary"""
 
-        all_bucketlists.pop(bucketlist_key)
-        return all_bucketlists
+        all_bucketlists[bucketlist_key][0].pop(bucketlist_name)
 
 
     def clear_bucketlist(self):
         """ Remove all items in the bucketlist """
         all_bucketlists[:] = []
-        
+
 
 
 class Bucketlist_Activities(Bucketlist):
@@ -107,7 +109,5 @@ class Bucketlist_Activities(Bucketlist):
 
         all_bucketlists_activities.pop(bucketlist_activity_key)
         return all_bucketlists_activities
-
-
 
                             
