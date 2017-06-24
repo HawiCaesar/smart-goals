@@ -119,3 +119,26 @@ class Bucketlist_Activities(Bucketlist):
 
         all_bucketlists_activities.pop(bucketlist_activity_key)
         return all_bucketlists_activities
+
+
+
+user7_bucketlist = Bucketlist()
+user7_bucketlist.clear_bucketlist()
+user7_bucketlist.create_bucketlist('Career Things', 'Career milestones')
+user7_bucketlist.create_bucketlist('Travel Manenos', 'Places to travel')
+
+bucketlist_activity = Bucketlist_Activities()
+
+bucketlist_activity.clear_bucketlist_activity()
+bucketlist_activity.create_bucketlist_activity('Career Things', 'Achieve A',
+                                                       '01/01/2018', False)
+
+bucketlist_activity.create_bucketlist_activity('Career Things', 'Achieve B',
+                                                       '01/01/2018', False)
+
+
+bucketlist_activity.create_bucketlist_activity('Travel Manenos', 'Go to A',
+                                                '01/01/2018', False)
+
+print(bucketlist_activity.get_bucketlist_ativities())
+                            
