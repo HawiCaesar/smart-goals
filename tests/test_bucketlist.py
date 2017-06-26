@@ -33,7 +33,7 @@ class BucketlistSmartGoalsTestCase(unittest.TestCase):
                                                 'Travel Manenos',
                                                 'Places to travel')
 
-        count = len(models.all_bucketlists["jist@email.com"][0])
+        count = len(models.all_bucketlists["jist@email.com"])
 
         self.assertEqual(count, 2, "User cannot make more than one bucketlist")
 
@@ -42,11 +42,11 @@ class BucketlistSmartGoalsTestCase(unittest.TestCase):
         self.user1.create_user("John Brown", "jbrown@email.com", "qaz12#@")
 
         self.user1_bucketlist.create_bucketlist(models.all_users['jbrown@email.com'][1],
-                                                'Career Targets',
+                                                'Career Things',
                                                 'Goals to achieve in my career')
 
-        self.user1_bucketlist.update_bucketlist(models.all_users['jbrown@email.com'][1],
-                                                'Career Targets', 'Career Targets',
+        self.user1_bucketlist.update_bucketlist(models.all_users['jbrown@email.com'][1], 0,
+                                                'Career Targets',
                                                 'Target to aim for in my career')
 
         self.assertEqual(models.all_bucketlists['jbrown@email.com'][0],
@@ -63,10 +63,15 @@ class BucketlistSmartGoalsTestCase(unittest.TestCase):
                                                 'Travel Manenos',
                                                 'Places to travel')
 
-        self.user1_bucketlist.delete_bucketlist(models.all_users['bhawi@gmail.com'][1],
-                                                'Career Things')
+        self.user1_bucketlist.delete_bucketlist(models.all_users['bhawi@gmail.com'][1], 0)
 
         self.assertEqual(models.all_bucketlists['bhawi@gmail.com'][0],
                          {'Travel Manenos':'Places to travel'},
                          "User cannot delete a bucketlist")
-        
+
+    def test_user_can_delete_non_existing_bucketlist(self):
+        pass
+
+    def test_user_can_update_non_existing_bucketlist(self):
+        pass
+
