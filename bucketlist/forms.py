@@ -22,6 +22,11 @@ class BucketlistForm(FlaskForm):
     simple_description = TextAreaField("Simple Description", validators=[DataRequired()])
     submit = SubmitField("Add Bucketlist")
 
+class BucketlistFormUpdate(FlaskForm):
+    bucketlistname = StringField('Bucketlist name', validators=[DataRequired()])
+    simple_description = TextAreaField("Simple Description", validators=[DataRequired()])
+    submit = SubmitField("Update Bucketlist")
+
 class ActivityForm(FlaskForm):
     bucketlist_activity_name = StringField('Bucketlist Activity Name', validators=[DataRequired()])
     date = StringField("Have this done by", validators=[DataRequired()])
