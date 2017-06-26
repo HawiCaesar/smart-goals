@@ -108,20 +108,3 @@ class Bucketlist_Activities(Bucketlist):
 
         all_bucketlists_activities.pop(bucketlist_activity_key)
         return all_bucketlists_activities
-
-user1 = User()
-user1.create_user("John Ist", "jist@email.com", "qaz12#@")
-
-user1_bucketlist = Bucketlist()
-
-user1_bucketlist.create_bucketlist(all_users['jist@email.com'][1],
-                                   'Career Things',
-                                   'Goals to achieve in my career')
-user1_bucketlist.create_bucketlist(all_users['jist@email.com'][1],
-                                   'Travel Manenos',
-                                   'Places to travel')
-
-user1_bucketlist.update_bucketlist('jist@email.com', 0, '', '')
-
-print(all_bucketlists['jist@email.com'])
-#print(len(all_bucketlists['jist@email.com']))
