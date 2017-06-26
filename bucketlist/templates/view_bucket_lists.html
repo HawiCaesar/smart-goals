@@ -20,7 +20,7 @@
     <table class="table table-striped">
     <thead>
         <tr>
-             <th>#</th> 
+            <th>#</th> 
             <th>Bucketlist</th>
             <th><center>More About it</center></th>
             <th><center>Action</center></th>
@@ -38,8 +38,8 @@
                 {% endfor %}
                         <td>
                             <center>
-                                <a href="#" class="btn btn-primary">Change</a>
-                                <a href="#" class="btn btn-danger">Delete</a>
+                                <a href="/change-bucketlist/{{ list_index }}" class="btn btn-primary">Change</a>
+                                <a href="/delete-bucketlist/{{ list_index }}" class="btn btn-danger">Delete</a>
                             </center>
                         </td>
             </tr>

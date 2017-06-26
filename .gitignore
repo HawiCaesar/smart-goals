@@ -2,3 +2,4 @@ __pycache__/*
 bucklist/__pycache__/*
 *.pyc
 .coverage
+cover/
