@@ -28,7 +28,7 @@ class Bucketlist(object):
         self.bucketlist = {bucketlist_name:bucketlist_description}
 
         if current_user in all_bucketlists:
-            all_bucketlists[current_user][0].update(self.bucketlist)
+            all_bucketlists[current_user].append(self.bucketlist)
 
         else:
             all_bucketlists[current_user] = [self.bucketlist]
@@ -40,26 +40,25 @@ class Bucketlist(object):
     #     return all_bucketlists
 
 
-    def update_bucketlist(self, bucketlist_key, old_bucketlist_name, 
+    def update_bucketlist(self, user_key, bucketlist_key,
                           new_bucketlist_name, new_bucketlist_description):
 
         """ get the bucket list key and update the new details of the bucketlist """
 
-        user_bucketlists = all_bucketlists[bucketlist_key][0]
+        user_bucketlists = all_bucketlists[user_key]
 
-        update_bucketlist = user_bucketlists[old_bucketlist_name]
+        update_bucketlist = user_bucketlists[bucketlist_key]
 
         update_bucketlist = {new_bucketlist_name:new_bucketlist_description}
 
-        del user_bucketlists[old_bucketlist_name]
-
-        all_bucketlists[bucketlist_key][0].update(update_bucketlist)
+        all_bucketlists[user_key][bucketlist_key] = update_bucketlist
 
 
-    def delete_bucketlist(self, bucketlist_key, bucketlist_name):
-        """ remove a bucketlist via a bucketlist key .pop for dictionary"""
 
-        all_bucketlists[bucketlist_key][0].pop(bucketlist_name)
+    def delete_bucketlist(self, user_key, bucketlist_key):
+        """ remove a bucketlist via a bucketlist key .pop for list"""
+
+        all_bucketlists[user_key].pop(bucketlist_key)
 
 
     def clear_bucketlist(self):
@@ -110,4 +109,19 @@ class Bucketlist_Activities(Bucketlist):
         all_bucketlists_activities.pop(bucketlist_activity_key)
         return all_bucketlists_activities
 
-                            
+user1 = User()
+user1.create_user("John Ist", "jist@email.com", "qaz12#@")
+
+user1_bucketlist = Bucketlist()
+
+user1_bucketlist.create_bucketlist(all_users['jist@email.com'][1],
+                                   'Career Things',
+                                   'Goals to achieve in my career')
+user1_bucketlist.create_bucketlist(all_users['jist@email.com'][1],
+                                   'Travel Manenos',
+                                   'Places to travel')
+
+user1_bucketlist.update_bucketlist('jist@email.com', 0, '', '')
+
+print(all_bucketlists['jist@email.com'])
+#print(len(all_bucketlists['jist@email.com']))
