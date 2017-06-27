@@ -243,9 +243,6 @@ def update_bucketlist(id):
                                          request.form.get("bucketlistname"),
                                          request.form.get("simple_description"))
 
-
-            print(all_bucketlists[current_user[1]])
-
             return redirect(url_for("user_bucket_lists"))
 
         else:
@@ -283,30 +280,63 @@ def delete_bucketlist(id):
 
 ################# Bucketlist Activity functions
 
-@app.route("/bucketlist-activities/<id>/<bucketlist>")
-def user_bucket_lists_activities(id, bucketlist):
+@app.route("/bucketlist-activities-for/<id>")
+def user_bucket_lists_activities(id):
+    if check_current_user() is True:
 
-    id = int(id)
+        id = int(id)
+        global current_user
 
-    bucketlist_details = []
-    bucketlist_details.append(id)
-    bucketlist_details.append(bucketlist)
+        bucketlist_details = []
 
-    return render_template('view_bucket_list_activities.html',
-                           bucketlist_info=bucketlist_details,
-                           activities=all_bucketlists_activities)
+        for key, value in all_bucketlists[current_user[1]][id].items():
+            bucketlist_details.append(key)
 
-@app.route("/add-bucketlist-activity/<id>")
-def activity_page(id):
-    form = ActivityForm()
+        #check if user email has been set with bucketlist activites
+        if current_user[1] in all_bucketlists_activities:
 
-    bucketlist_key = int(id)
-    bucket = ""
+            return render_template('view_bucket_list_activities.html',
+                                   bucketlist_info=bucketlist_details,
+                                   bucketlist_key=id,
+                                   activities=all_bucketlists_activities[current_user[1]])
+        else:
+            return render_template('view_bucket_list_activities.html',
+                                   bucketlist_info=bucketlist_details,
+                                   bucketlist_key=id)
 
-    for key, value in all_bucketlists[bucketlist_key].items():
-        bucket = key
+    else:
+        error = Markup("<div class='alert alert-danger' role='alert'>\
+                        <strong>LLogin Required! </strong>You must be logged in to\
+                        to access that page\
+                        </div>")
 
-    return render_template('add_activity.html', form=form, bucketlist=bucket, key=bucketlist_key)
+        flash(error)
+        return redirect(url_for("login"))
+
+@app.route("/add-bucketlist-activity/<id>/<bucketlist>")
+def activity_page(id, bucketlist):
+
+    if check_current_user() is True:
+
+        form = ActivityForm()
+
+        bucketlist_key = int(id)
+        bucket = bucketlist
+        global current_user
+
+
+        return render_template('add_activity.html', form=form,
+                               bucketlist_key=bucketlist_key,
+                               bucketlist=bucket)
+
+    else:
+        error = Markup("<div class='alert alert-danger' role='alert'>\
+                        <strong>LLogin Required! </strong>You must be logged in to\
+                        to access that page\
+                        </div>")
+
+        flash(error)
+        return redirect(url_for("login"))
 
 @app.route("/create-bucketlist-activity/<id>/<bucketlist>",  methods=['GET', 'POST'])
 def create_activity(id, bucketlist):
@@ -315,24 +345,24 @@ def create_activity(id, bucketlist):
 
     bucketlist_key = int(id)
     bucket = bucketlist
+    global current_user
 
     if form.validate_on_submit():
         activity = models.Bucketlist_Activities()
-        activity.create_bucketlist_activity(bucket,
+        activity.create_bucketlist_activity(current_user[1], bucket,
                                             request.form.get("bucketlist_activity_name"),
                                             request.form.get("date"), False)
 
         success = Markup("<div class='alert alert-success' role='alert'>\
-                        <strong>Done! </strong>"+request.form.get("bucketlist_activity_name")+"\
+                        <strong>Done! </strong>Added "\
+                        +request.form.get("bucketlist_activity_name")+"\
                         </div>")
 
         flash(success)
 
-        current_bucket = [id, bucket]
+        #print(all_bucketlists_activities[current_user[1]])
 
-        return render_template('view_bucket_list_activities.html',
-                               activities=all_bucketlists_activities,
-                               bucketlist_info=current_bucket)
+        return redirect(url_for("user_bucket_lists_activities", id=bucketlist_key))
 
     else:
 
