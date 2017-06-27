@@ -66,10 +66,10 @@ class Bucketlist_Activities(Bucketlist):
     def __init__(self):
         super(Bucketlist_Activities, self).__init__()
 
-    def create_bucketlist_activity(self, current_user, bucketlist_key, bucketlist_activity_name,
+    def create_bucketlist_activity(self, current_user, bucketlist_name, bucketlist_activity_name,
                                    due_date, done):
 
-        new_activity = {bucketlist_key:due_date, bucketlist_activity_name:done}
+        new_activity = {bucketlist_activity_name: [done, due_date, bucketlist_name]}
 
         if current_user in all_bucketlists_activities:
 
@@ -86,13 +86,66 @@ class Bucketlist_Activities(Bucketlist):
 
         activity = user_bucketlists_activities[bucketlist_activity_key]
 
-        activity = {bucketlist_name:due_date, bucketlist_activity_name:done}
+        activity = {bucketlist_activity_name: [done, due_date, bucketlist_name]}
 
         all_bucketlists_activities[current_user][bucketlist_activity_key] = activity
+
 
 
 
     def delete_bucketlist_activity(self, current_user, bucketlist_activity_key):
 
         all_bucketlists_activities[current_user].pop(bucketlist_activity_key)
+
+
+# user1 = User()
+# user1_bucketlist = Bucketlist()
+# user1_bucketlist_activity = Bucketlist_Activities()
+
+# user1.create_user("Zach Reed", "zreed@email.com", "qaz12#@")
+
+# user1_bucketlist.create_bucketlist(all_users['zreed@email.com'][1],
+#                                    'Career Things',
+#                                    'Goals to achieve in my career')
+
+# user1_bucketlist.create_bucketlist(all_users['zreed@email.com'][1],
+#                                    'Travel Manenos',
+#                                    'Places to travel')
+
+# all_bucketlists_activities = {}
+# user1_bucketlist_activity.create_bucketlist_activity(
+#     all_users['zreed@email.com'][1],
+#     'Career Things',
+#     'Achieve A', '01/01/2018', False)
+
+# user1_bucketlist_activity.create_bucketlist_activity(
+#     all_users['zreed@email.com'][1],
+#     'Career Things',
+#     'Achieve XYZ', '01/01/2018', False)
+
+# user1_bucketlist_activity.create_bucketlist_activity(
+#     all_users['zreed@email.com'][1],
+#     'Travel Manenos',
+#     'Travel to A', '01/10/2018', False)
+
+
+
+# user1_bucketlist_activity.update_bucketlist_activity(all_users['zreed@email.com'][1],
+#                                                      0, 'Career Things', '01/02/2018',
+#                                                      'Achieve Promotion', True)
+
+
+# print(all_bucketlists_activities['zreed@email.com'])
+
+# for activitylist in all_bucketlists_activities['zreed@email.com']:
+#     for key, value in activitylist.items():
+#         if value[2] == 'Travel Manenos':
+#             print(key)
+#             print("______________\n\n")
+#             if value[0] == False:
+#                 print("Not yet")
+#             else:
+#                 print("Done")
+            
+#             print("*****************")
 
