@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for, session, flash, Markup
 
 from bucketlist import app, models
-from .forms import SignUpForm, LoginForm, BucketlistForm, ActivityForm, BucketlistFormUpdate
+from .forms import SignUpForm, LoginForm, BucketlistForm, ActivityForm, BucketlistFormUpdate, ActivityFormUpdate
 import hashlib
 from .models import all_users, all_bucketlists, all_bucketlists_activities
 
@@ -313,14 +313,14 @@ def user_bucket_lists_activities(id):
         flash(error)
         return redirect(url_for("login"))
 
-@app.route("/add-bucketlist-activity/<id>/<bucketlist>")
-def activity_page(id, bucketlist):
+@app.route("/add-bucketlist-activity/<bucketlist_id>/<bucketlist>")
+def activity_page(bucketlist_id, bucketlist):
 
     if check_current_user() is True:
 
         form = ActivityForm()
 
-        bucketlist_key = int(id)
+        bucketlist_key = int(bucketlist_id)
         bucket = bucketlist
         global current_user
 
@@ -338,12 +338,12 @@ def activity_page(id, bucketlist):
         flash(error)
         return redirect(url_for("login"))
 
-@app.route("/create-bucketlist-activity/<id>/<bucketlist>",  methods=['GET', 'POST'])
-def create_activity(id, bucketlist):
+@app.route("/create-bucketlist-activity/<bucketlist_id>/<bucketlist>",  methods=['GET', 'POST'])
+def create_activity(bucketlist_id, bucketlist):
 
     form = ActivityForm(request.form)
 
-    bucketlist_key = int(id)
+    bucketlist_key = int(bucketlist_id)
     bucket = bucketlist
     global current_user
 
@@ -367,6 +367,147 @@ def create_activity(id, bucketlist):
     else:
 
         return render_template('add_activity.html', form=form)
+
+
+@app.route("/change-bucketlist-activity/<activity_id>/<bucketlist_id>/<bucketlist>")
+def change_bucketlist_activity(activity_id, bucketlist_id, bucketlist):
+    if check_current_user() is True:
+
+        form = ActivityFormUpdate()
+
+        activity_id = int(activity_id)
+        bucketlist_id = int(bucketlist_id)
+        bucket = bucketlist
+        global current_user
+
+        activiy_detail = all_bucketlists_activities[current_user[1]][activity_id]
+
+        for key, value in activiy_detail.items():
+            form.bucketlist_activity_name.data = key
+            form.date.data = value[1]
+
+        return render_template("change_activity.html", form=form, activity_id=activity_id, 
+                               bucketlist=bucket, bucketlist_id=bucketlist_id)
+
+    else:
+        error = Markup("<div class='alert alert-danger' role='alert'>\
+                        <strong>LLogin Required! </strong>You must be logged in to\
+                        to access that page\
+                        </div>")
+
+        flash(error)
+        return redirect(url_for("login"))
+
+
+@app.route("/update-bucketlist-activity/<activity_id>/<bucketlist_id>/<bucketlist>", methods=['GET', 'POST'])
+def update_bucketlist_activity(activity_id, bucketlist_id, bucketlist):
+    if check_current_user() is True:
+        form = ActivityFormUpdate(request.form)
+        global current_user
+
+        bucketlist_activity_key = int(activity_id)
+        bucketlist_id = int(bucketlist_id)
+        bucket = bucketlist
+
+        if form.validate_on_submit():
+            user_bucketlist_activity = models.Bucketlist_Activities()
+
+
+            user_bucketlist_activity.update_bucketlist_activity(current_user[1], bucketlist_activity_key,
+                                                                bucket, request.form.get("date"),
+                                                                request.form.get("bucketlist_activity_name"),
+                                                                False)
+            
+            success = Markup("<div class='alert alert-success' role='alert'>\
+                        <strong>Done! </strong>Updated "\
+                        +request.form.get("bucketlist_activity_name")+"\
+                        </div>")
+
+            flash(success)
+
+
+            return redirect(url_for("user_bucket_lists_activities", id=bucketlist_id))
+
+        else:
+            return render_template("change_activity.html", form=form, activity_id=activity_id, 
+                                   bucketlist=bucket, bucketlist_id=bucketlist_id)
+    else:
+        error = Markup("<div class='alert alert-danger' role='alert'>\
+                        <strong>Login Required! </strong>You must be logged in to\
+                        to access that page\
+                        </div>")
+
+        flash(error)
+        return redirect(url_for("login"))
+
+
+@app.route("/delete-bucketlist-activity/<activity_id>/<bucketlist_id>", methods=['GET', 'POST'])
+def delete_bucketlist_activity(activity_id, bucketlist_id):
+    if check_current_user() is True:
+        global current_user
+        bucketlist_activity_key = int(activity_id)
+        bucketlist_id = int(bucketlist_id)
+
+        print(bucketlist_activity_key)
+
+        remove_activity = models.Bucketlist_Activities()
+        remove_activity.delete_bucketlist_activity(current_user[1], bucketlist_activity_key)
+
+        success = Markup("<div class='alert alert-success' role='alert'>\
+                    <strong>Done! </strong>Bucketlist Removed</div>")
+
+        flash(success)
+
+        return redirect(url_for("user_bucket_lists_activities", id=bucketlist_id))
+
+
+    else:
+        error = Markup("<div class='alert alert-danger' role='alert'>\
+                        <strong>Login Required! </strong>You must be logged in to\
+                        to access that page\
+                        </div>")
+
+        flash(error)
+        return redirect(url_for("login"))
+
+
+
+@app.route("/done-with-activity/<id>/<bucketlist_id>/<bucketlist>")
+def done_with_activity(id, bucketlist_id, bucketlist):
+    if check_current_user() is True:
+        form = ActivityFormUpdate(request.form)
+        global current_user
+
+        bucketlist_activity_key = int(activity_id)
+        bucketlist_id = int(bucketlist_id)
+        bucket = bucketlist
+
+        user_bucketlist_activity = models.Bucketlist_Activities()
+
+
+        user_bucketlist_activity.update_bucketlist_activity(current_user[1], bucketlist_activity_key,
+                                                            bucket, request.form.get("date"),
+                                                            request.form.get("bucketlist_activity_name"),
+                                                            True)
+
+        success = Markup("<div class='alert alert-success' role='alert'>\
+                    <strong>Done! </strong>Completed "\
+                    +request.form.get("bucketlist_activity_name")+"\
+                    </div>")
+
+        flash(success)
+
+
+        return redirect(url_for("user_bucket_lists_activities", id=bucketlist_id))
+
+    else:
+        error = Markup("<div class='alert alert-danger' role='alert'>\
+                        <strong>Login Required! </strong>You must be logged in to\
+                        to access that page\
+                        </div>")
+
+        flash(error)
+        return redirect(url_for("login"))
 
 
 
