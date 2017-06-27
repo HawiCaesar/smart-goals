@@ -25,9 +25,8 @@ class BucketlistActivitySmartGoalsTestCase(unittest.TestCase):
             'Career Things',
             'Achieve A', '01/01/2018', False)
 
-        self.assertEqual(models.all_bucketlists_activities
-                         [models.all_users['zreed@email.com'][1]][0],
-                         {'Career Things':'01/01/2018', 'Achieve A':False},
+        self.assertEqual(models.all_bucketlists_activities['zreed@email.com'][0],
+                         {'Achieve A':[False, '01/01/2018', 'Career Things']},
                          "User cannot create bucketlist activity")
 
     def test_user_can_create_more_than_one_bucketlist_activity(self):
@@ -73,22 +72,9 @@ class BucketlistActivitySmartGoalsTestCase(unittest.TestCase):
             'Achieve Promotion', False)
 
 
-        compare_list = []
-        compare = False
-        for key, value in models.all_bucketlists_activities\
-                                 [models.all_users['zreed@email.com'][1]][0].items():
-            compare_list.append(key)
-            compare_list.append(value)
-
-
-        if 'Achieve Promotion' in compare_list\
-                               and '01/02/2018' in compare_list\
-                               and 'Career Things' in  compare_list:
-            compare = True
-
-
-
-        self.assertEqual(compare, True, "User cannot update bucketlist")
+        self.assertEqual(models.all_bucketlists_activities['zreed@email.com'][0],
+                         {'Achieve Promotion':[False, '01/02/2018', 'Career Things']},
+                         "User cannot update bucketlist activity")
 
 
 
