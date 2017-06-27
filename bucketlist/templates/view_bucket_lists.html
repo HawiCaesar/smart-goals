@@ -32,7 +32,7 @@
                 <th scope="row">{{ loop.index }}{% set list_index = loop.index0 %}</th> 
                 {% for key, value in bucketlist.items() %}
                     
-                        <td><a href="/bucketlist-activities/{{ list_index }}/{{ key }}">{{ key }}</a></td>
+                        <td><a href="/bucketlist-activities-for/{{ list_index }}">{{ key }}</a></td>
                         <td><center>{{ value }}</center></td>
                         
                 {% endfor %}
