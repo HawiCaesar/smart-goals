@@ -20,7 +20,7 @@
 <thead>
     <tr>
         <th>#</th>
-        <th>Bucketlist Activity</th>
+        <th><center>Bucketlist Activity</center></th>
         <th><center>To Be Done By</center></th>
         <th><center>Action</center></th>
     </tr>
@@ -28,21 +28,20 @@
 <tbody>
          {% for activity in activities %}
             <tr>
-                <td>{{ loop.index }} {% set list_index = loop.index0 %}</td>
+                <th>{{ loop.index }} {% set list_index = loop.index0 %}</th>
                 {% for key, value in activity.items() %}
-                    {% if key != bucketlist_info[0] %}
-                    <td>{{ key }}, {% if value == True %}Done with this {% else %} Waiting to achieve{% endif %}</td>
-                    {% else %}
-                    <td><center>{{ value }}</center></td>
+                {% if value[2] == bucketlist_info[0] %}
+
+                    <td><center>{{ key }}, {% if value[0] == True %}Done with this {% else %} Waiting to achieve{% endif %}</center></td>
+                    <td><center>{{ value[1] }}</center></td>
                     <td>
                         <center>
-                            <a href="{{ list_index }}" class="btn btn-primary">Change</a>
-                            <a href="{{ list_index }}" class="btn btn-danger">Delete</a>
+                            <a href="/change-bucketlist-activity/{{ list_index }}/{{ bucketlist_key }}/{{ bucketlist_info[0] }}" class="btn btn-primary">Change</a>
+                            <a href="/delete-bucketlist-activity/{{ list_index }}/{{ bucketlist_key }}" class="btn btn-danger">Delete</a>
                         </center>
                     </td>
-                    {%endif%}
+                {% endif %}
                 {% endfor %}
-        
             </tr>
         {% endfor %}
 </tbody>
