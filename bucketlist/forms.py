@@ -31,3 +31,8 @@ class ActivityForm(FlaskForm):
     bucketlist_activity_name = StringField('Bucketlist Activity Name', validators=[DataRequired()])
     date = StringField("Have this done by", validators=[DataRequired()])
     submit = SubmitField("Add Activity")
+
+class ActivityFormUpdate(FlaskForm):
+    bucketlist_activity_name = StringField('Bucketlist Activity Name', validators=[DataRequired()])
+    date = StringField("Have this done by", validators=[DataRequired()])
+    submit = SubmitField("Update Activity")
