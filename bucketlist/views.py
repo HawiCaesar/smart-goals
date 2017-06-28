@@ -63,11 +63,11 @@ def new_user_login():
                         Please enter correct credentials!\
                         </div>")
             flash(error)
-            return render_template("login", form=LoginForm())
+            return render_template("login.html", form=LoginForm())
 
 
     else:
-        return render_template("login", form=LoginForm())
+        return render_template("login.html", form=LoginForm())
 
 ## Set user details on login
 def set_current_user(user_details):
