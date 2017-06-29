@@ -61,8 +61,6 @@ class UserSmartGoalsTestCase(unittest.TestCase):
                                  '3c01bdbb26f358bab27f267924aa2c9a03fcfdb8',
                                  "User cannot be authenticated")
 
-            else:
-                sys.stdout = "Request context not initialized well"
 
 
 
@@ -101,11 +99,5 @@ class UserSmartGoalsTestCase(unittest.TestCase):
                           "jb@email.com", "3c01bdbb26f358bab27f267924aa2c9a03fcfdb8"],
                          "Current user variable cannot be set")
 
-
-
-
-
-if __name__ == "__main__":
-    unittest.main()
 
     
