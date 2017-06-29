@@ -30,17 +30,20 @@
             <tr>
                 <th>{{ loop.index }} {% set list_index = loop.index0 %}</th>
                 {% for key, value in activity.items() %}
-                {% if value[2] == bucketlist_info[0] %}
 
                     <td><center>{{ key }}, {% if value[0] == True %}Done with this {% else %} Waiting to achieve{% endif %}</center></td>
                     <td><center>{{ value[1] }}</center></td>
                     <td>
                         <center>
+                            {% if value[0] == True %}
+                                <a title="Click to change to not done" href="/done-with-activity/{{ list_index }}/{{ bucketlist_key }}/{{ bucketlist_info[0] }}/0" class="btn btn-success">Done!</a> 
+                            {% else %}
+                                <a href="/done-with-activity/{{ list_index }}/{{ bucketlist_key }}/{{ bucketlist_info[0] }}/1" class="btn btn-primary">Yes, Done This</a>
+                            {% endif %}
                             <a href="/change-bucketlist-activity/{{ list_index }}/{{ bucketlist_key }}/{{ bucketlist_info[0] }}" class="btn btn-primary">Change</a>
                             <a href="/delete-bucketlist-activity/{{ list_index }}/{{ bucketlist_key }}" class="btn btn-danger">Delete</a>
                         </center>
                     </td>
-                {% endif %}
                 {% endfor %}
             </tr>
         {% endfor %}
