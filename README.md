@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/HawiCaesar/smart-goals.svg?branch=develop)](https://travis-ci.org/HawiCaesar/smart-goals)
 [![Coverage Status](https://coveralls.io/repos/github/HawiCaesar/smart-goals/badge.svg?develop)](https://coveralls.io/github/HawiCaesar/smart-goals)
+[![Issue Count](https://codeclimate.com/github/HawiCaesar/smart-goals/badges/issue_count.svg)](https://codeclimate.com/github/HawiCaesar/smart-goals)
 
 # Smart Goals
 
