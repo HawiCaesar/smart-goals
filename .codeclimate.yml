@@ -1,0 +1,13 @@
+engines:
+  # enable check on css
+  csslint:
+    enabled: true
+
+  # enable js lint
+  eslint:
+    enabled: false
+
+    # configure languages
+    config:
+      languages:
+      - python
