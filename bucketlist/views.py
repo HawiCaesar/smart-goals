@@ -41,11 +41,11 @@ def new_user_login():
         entered_password = hash_object.hexdigest()
 
         #User exists
-        if request.form.get('email') in all_users:
+        if request.form.get('email') in models.all_users:
 
-            if all_users[request.form.get('email')][2] == entered_password:
+            if models.all_users[request.form.get('email')][2] == entered_password:
 
-                set_current_user(all_users[request.form.get('email')])
+                set_current_user(models.all_users[request.form.get('email')])
 
                 return redirect(url_for('user_bucket_lists'))
             else:

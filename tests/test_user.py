@@ -37,7 +37,6 @@ class UserSmartGoalsTestCase(unittest.TestCase):
 
         assert b"Smart Goals | Login" in response.data
 
-
     def test_registered_user_can_login(self):
         self.user1.create_user("James Brown", "jb@email.com", "ABC")
 
@@ -48,35 +47,32 @@ class UserSmartGoalsTestCase(unittest.TestCase):
                                                confirm_password="ABC"),
                                      follow_redirects=True)
 
-        with app.test_request_context('/auth/',
-                method="POST", data=dict(email="jb@email.com", password="ABC")):
-
-            # User exists after just being added
-            if models.all_users['jb@email.com'][1] == request.form.get('email'):
-
-                hash_object = hashlib.sha1(request.form.get('password').encode())
-                entered_password = hash_object.hexdigest()
-
-                self.assertEqual(models.all_users['jb@email.com'][2],
-                                 '3c01bdbb26f358bab27f267924aa2c9a03fcfdb8',
-                                 "User cannot be authenticated")
-
-
-
-
         assert b"Smart Goals | Login" in response1.data
-        #assert b"Smart Goals | My Bucketlists" in response2.data
-        # call the before funcs
-        # rv = app.preprocess_request()
-        # if rv != None:
-        #     response = app.make_response(rv)
-        # else:
-        #     # do the main dispatch
-        #     rv = app.dispatch_request()
-        #     response = app.make_response(rv)
 
-        #     # now do the after funcs
-        #     response = app.process_response(response)
+        response2 = self.tester.post('/auth/',
+                                     data=dict(email="jb@email.com",
+                                               password="ABC"),
+                                     follow_redirects=True)
+
+        # User has logged in
+        self.assertIn("jb@email.com", models.all_users)
+        assert b"Hello James Brown" in response2.data
+
+    def test_invalid_user_cannot_login(self):
+        response = self.tester.post('/auth/', data=dict(email="somename@email.com",
+                                                        password="ABC"),
+                                    follow_redirects=True)
+
+        assert b"Invalid Credentials!" in response.data
+
+    def test_user_entered_invalid_password(self):
+        self.user1.create_user("James Brown", "jb@email.com", "ABC")
+
+        response = self.tester.post('/auth/',
+                                    data=dict(email="jb@email.com", password="notpassword"))
+
+        assert b"Invalid Credentials!" in response.data
+
 
 
     def test_login_form_appears_if_form_not_valid(self):
@@ -99,5 +95,10 @@ class UserSmartGoalsTestCase(unittest.TestCase):
                           "jb@email.com", "3c01bdbb26f358bab27f267924aa2c9a03fcfdb8"],
                          "Current user variable cannot be set")
 
+    def test_check_when_no_current_user(self):
+        user_details = []
 
-    
+        views.set_current_user(user_details)
+        self.assertEqual(views.current_user, [], "Current User cannot be set to empty list")
+
+
