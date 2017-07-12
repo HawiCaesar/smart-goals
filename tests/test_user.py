@@ -71,7 +71,7 @@ class UserSmartGoalsTestCase(unittest.TestCase):
         response = self.tester.post('/auth/',
                                     data=dict(email="jb@email.com", password="notpassword"))
 
-        assert b"Invalid Credentials!"
+        assert b"Invalid Credentials!" in response.data
 
 
 
