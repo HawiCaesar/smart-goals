@@ -55,11 +55,6 @@ class Bucketlist(object):
         all_bucketlists[current_user].pop(bucketlist_key)
 
 
-    def clear_bucketlist(self):
-        """ Remove all items in the bucketlist """
-        all_bucketlists[:] = []
-
-
 
 class Bucketlist_Activities(Bucketlist):
 
